@@ -1,0 +1,4 @@
+PROJECT IDEAS:-
+1.A website that if we give "from" and "to" address it should display all the roots to that through bike, train, plane  for staying in hotels (cost, food, rent ), main places, with their cost, with all roots that to Ai assistance(chatbot), suggestions (ML Model).
+2.If we upload a photo of a user and a photo of dress from malls (like pant, shirt) it should replace your cloths .
+3. A website that we give the hyperlink of a GitHub repository and it will explain all code of that application in the form of an articles.

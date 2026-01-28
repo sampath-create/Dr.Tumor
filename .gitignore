@@ -1,0 +1,50 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+*.egg
+.eggs/
+build/
+dist/
+.Python
+.env
+.env.*
+.venv/
+venv/
+ENV/
+env/
+.mypy_cache/
+.pytest_cache/
+coverage/
+.cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+logs/
+
+# Node / frontend
+node_modules/
+.pnp/
+.pnp.js
+.npm/
+yarn-error.log
+pnpm-debug.log
+dist/
+build/
+.svelte-kit/
+.vite/
+.DS_Store
+
+# IDE / tooling
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
