@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-dotenv
+motor
+pymongo[srv]
+certifi
+dnspython
+pydantic[email]
+pydantic-settings
+passlib[bcrypt]
+bcrypt==4.0.1
+python-jose[cryptography]
+python-multipart
+httpx
+cloudinary
