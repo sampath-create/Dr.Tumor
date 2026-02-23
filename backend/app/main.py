@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.database import connect_to_mongo, close_mongo_connection
@@ -5,12 +7,17 @@ from app.routers import auth, users, appointments, medical, ai, admin
 
 app = FastAPI(title="Hospital Management System API")
 
+frontend_origin = os.getenv("FRONTEND_ORIGIN")
+
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://localhost:5175",
     "http://127.0.0.1:5175",
 ]
+
+if frontend_origin:
+    origins.append(frontend_origin)
 
 # CORS
 app.add_middleware(
