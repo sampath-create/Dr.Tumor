@@ -1,3 +1,136 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ══════════════════════════════════════
+   DARK THEME OVERRIDES
+   ══════════════════════════════════════ */
+
+/* Base */
+.dark {
+  color-scheme: dark;
+}
+.dark body {
+  background-color: #111827;
+  color: #f1f5f9;
+}
+
+/* ── Page / layout backgrounds ── */
+.dark .bg-cream-50  { background-color: #111827 !important; }
+.dark .bg-cream-100 { background-color: #1f2937 !important; }
+.dark .bg-cream-200 { background-color: #374151 !important; }
+.dark .bg-white     { background-color: #1f2937 !important; }
+.dark .bg-gray-50   { background-color: #111827 !important; }
+.dark .bg-gray-100  { background-color: #1f2937 !important; }
+.dark .bg-gray-200  { background-color: #374151 !important; }
+
+/* ── Coloured accent light backgrounds ── */
+.dark .bg-blue-50   { background-color: #172554 !important; }
+.dark .bg-green-50  { background-color: #052e16 !important; }
+.dark .bg-purple-50 { background-color: #2e1065 !important; }
+.dark .bg-amber-50  { background-color: #451a03 !important; }
+
+/* ── Status badge backgrounds ── */
+.dark .bg-green-100  { background-color: #14532d !important; }
+.dark .bg-yellow-100 { background-color: #713f12 !important; }
+.dark .bg-red-100    { background-color: #450a0a !important; }
+.dark .bg-blue-100   { background-color: #1e3a8a !important; }
+
+/* ── Text colours: custom brown palette ── */
+.dark .text-brown-900 { color: #f8fafc !important; }
+.dark .text-brown-800 { color: #f1f5f9 !important; }
+.dark .text-brown-700 { color: #e2e8f0 !important; }
+.dark .text-brown-600 { color: #cbd5e1 !important; }
+.dark .text-brown-500 { color: #94a3b8 !important; }
+.dark .text-brown-400 { color: #64748b !important; }
+
+/* ── Text colours: standard gray palette ── */
+.dark .text-gray-900 { color: #f8fafc !important; }
+.dark .text-gray-800 { color: #f1f5f9 !important; }
+.dark .text-gray-700 { color: #e2e8f0 !important; }
+.dark .text-gray-600 { color: #94a3b8 !important; }
+.dark .text-gray-500 { color: #64748b !important; }
+
+/* ── Status badge text ── */
+.dark .text-green-800  { color: #86efac !important; }
+.dark .text-yellow-800 { color: #fde047 !important; }
+.dark .text-red-800    { color: #fca5a5 !important; }
+.dark .text-blue-800   { color: #93c5fd !important; }
+.dark .text-green-600  { color: #4ade80 !important; }
+.dark .text-red-600    { color: #f87171 !important; }
+
+/* ── Borders ── */
+.dark .border-brown-200 { border-color: #374151 !important; }
+.dark .border-gray-200  { border-color: #374151 !important; }
+.dark .border-gray-100  { border-color: #374151 !important; }
+.dark .border-gray-300  { border-color: #4b5563 !important; }
+
+/* ── Dividers ── */
+.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #374151 !important;
+}
+
+/* ── Navigation bar ── */
+.dark nav { background-color: #111827 !important; }
+
+/* ── Tables ── */
+.dark thead { background-color: #374151 !important; }
+.dark thead th { background-color: #374151 !important; }
+.dark tbody { background-color: #1f2937 !important; }
+.dark tbody tr { background-color: #1f2937 !important; }
+.dark tbody tr:hover { background-color: #374151 !important; }
+
+/* ── Form inputs ── */
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+.dark select,
+.dark textarea {
+  background-color: #111827 !important;
+  color: #f1f5f9 !important;
+  border-color: #374151 !important;
+}
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #6b7280 !important;
+}
+.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* ── Disabled buttons ── */
+.dark button:disabled {
+  background-color: #374151 !important;
+  color: #94a3b8 !important;
+}
+
+/* ── Shadows ── */
+.dark .shadow    { box-shadow: 0 1px 3px 0 rgba(0,0,0,0.7), 0 1px 2px -1px rgba(0,0,0,0.7) !important; }
+.dark .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0,0,0,0.7) !important; }
+.dark .shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.7) !important; }
+.dark .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.7) !important; }
+.dark .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.7) !important; }
+.dark .shadow-2xl{ box-shadow: 0 25px 50px -12px rgba(0,0,0,0.9) !important; }
+
+/* ── Modal backdrop ── */
+.dark .bg-gray-600 { background-color: #030712 !important; }
+
+/* ── Scrollbar (WebKit) ── */
+.dark ::-webkit-scrollbar       { width: 8px; height: 8px; }
+.dark ::-webkit-scrollbar-track { background: #111827; }
+.dark ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+
+/* ── pre / code blocks ── */
+.dark pre { background-color: #111827 !important; color: #e2e8f0 !important; }
+
+/* ── Recharts (admin charts) ── */
+.dark .recharts-cartesian-grid-horizontal line,
+.dark .recharts-cartesian-grid-vertical line {
+  stroke: #374151 !important;
+}
+.dark .recharts-text { fill: #94a3b8 !important; }
+.dark .recharts-legend-item-text { color: #94a3b8 !important; }
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+  color: #f1f5f9 !important;
+}

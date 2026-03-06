@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -8,22 +9,22 @@ export default {
     extend: {
       colors: {
         brown: {
-          50: '#efebe9',
-          100: '#d7ccc8',
-          200: '#bcaaa4',
-          300: '#a1887f',
-          400: '#8d6e63',
-          500: '#795548',
-          600: '#6d4c41',
-          700: '#5d4037',
-          800: '#4e342e',
-          900: '#3e2723',
+          50:  '#E6F4F4',
+          100: '#CCE9E9',
+          200: '#99D3D3',
+          300: '#66BCBC',
+          400: '#2E9898',
+          500: '#0F7C7C',
+          600: '#0F7C7C',
+          700: '#0B6363',
+          800: '#084A4A',
+          900: '#053232',
         },
         cream: {
-          50: '#fff8e1',
-          100: '#ffecb3',
-          200: '#ffe082',
-          300: '#ffd54f',
+          50:  '#FDFCF8',
+          100: '#F7F3EC',
+          200: '#EDE8DF',
+          300: '#94A3B8',
         }
       },
       animation: {
