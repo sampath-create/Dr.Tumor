@@ -9,6 +9,7 @@ class UserRole(str, Enum):
     LAB_TECHNICIAN = "lab_technician"
     PHARMACY = "pharmacy"
     ADMIN = "admin"
+    STUDENT = "student"
 
 class UserBase(BaseModel):
     email: EmailStr

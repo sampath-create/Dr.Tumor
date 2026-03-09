@@ -30,28 +30,28 @@ const PharmacyDashboard = () => {
     };
 
     return (
-        <div className="min-h-screen bg-cream-50">
+        <div className="min-h-screen bg-slate-50">
             <Navbar role="pharmacy" />
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                 <div className="bg-white shadow overflow-hidden sm:rounded-md p-6">
-                    <h3 className="text-lg font-medium text-brown-900 mb-6">Pharmacy Queue</h3>
+                    <h3 className="text-lg font-medium text-slate-900 mb-6">Pharmacy Queue</h3>
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-cream-100">
+                            <thead className="bg-slate-100">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-brown-500 uppercase tracking-wider">Patient ID</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-brown-500 uppercase tracking-wider">Doctor ID</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-brown-500 uppercase tracking-wider">Medications</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-brown-500 uppercase tracking-wider">Status</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-brown-500 uppercase tracking-wider">Action</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Patient ID</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Doctor ID</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Medications</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Action</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {prescriptions.map((rx) => (
                                     <tr key={rx.id}>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-brown-900">{rx.patient_id}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-brown-500">{rx.doctor_id}</td>
-                                        <td className="px-6 py-4 text-sm text-brown-500">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">{rx.patient_id}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{rx.doctor_id}</td>
+                                        <td className="px-6 py-4 text-sm text-slate-500">
                                             <ul className="list-disc pl-4">
                                                 {rx.medications.map((m, i) => (
                                                     <li key={i}>{m.medicine_name} ({m.dosage})</li>
@@ -65,7 +65,7 @@ const PharmacyDashboard = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             {!rx.is_dispensed && (
-                                                <button onClick={() => handleDispense(rx.id)} className="text-brown-600 hover:text-brown-900 bg-cream-100 px-3 py-1 rounded">
+                                                <button onClick={() => handleDispense(rx.id)} className="text-blue-600 hover:text-blue-900 bg-slate-100 px-3 py-1 rounded">
                                                     Mark as Dispensed
                                                 </button>
                                             )}

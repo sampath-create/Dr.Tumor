@@ -62,7 +62,7 @@ async def get_system_stats(
             "completed_appointments": completed_appointments,
             "total_prescriptions": total_prescriptions,
             "dispensed_prescriptions": dispensed_prescriptions,
-            "revnue": completed_appointments * 50 # Mock revenue: $50 per completed appointment
+            "revenue": completed_appointments * 50 # Mock revenue: $50 per completed appointment
         },
         "charts": {
             "user_roles": user_stats,

@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PatientDashboard from './pages/patient/PatientDashboard';
+import StudentDashboard from './pages/student/StudentDashboard';
 import DoctorDashboard from './pages/doctor/DoctorDashboard';
 import LabDashboard from './pages/lab/LabDashboard';
 import PharmacyDashboard from './pages/PharmacyDashboard';
@@ -30,6 +31,7 @@ const RootRedirect = () => {
     
     switch (user.role) {
         case 'patient': return <Navigate to="/patient" />;
+        case 'student': return <Navigate to="/student" />;
         case 'doctor': return <Navigate to="/doctor" />;
         case 'lab_technician': return <Navigate to="/lab" />;
         case 'pharmacy': return <Navigate to="/pharmacy" />;
@@ -40,7 +42,7 @@ const RootRedirect = () => {
 
 function App() {
   return (
-    <div className="min-h-screen bg-cream-50">
+    <div className="min-h-screen bg-slate-50">
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -63,6 +65,13 @@ function App() {
         <Route path="/patient/*" element={
             <PrivateRoute allowedRoles={['patient']}>
                 <PatientDashboard />
+            </PrivateRoute>
+        } />
+
+        {/* Student Routes */}
+        <Route path="/student/*" element={
+            <PrivateRoute allowedRoles={['student']}>
+                <StudentDashboard />
             </PrivateRoute>
         } />
 

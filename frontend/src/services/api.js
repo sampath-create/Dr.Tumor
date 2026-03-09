@@ -51,6 +51,10 @@ export const adminAPI = {
     createUser: (userData) => api.post('/auth/register', userData), // Admin can use the same register endpoint with the token auth to create specific roles
 };
 
+export const chatbotAPI = {
+    sendMessage: (message, history) => api.post('/ai/chatbot', { message, history }),
+};
+
 // Public API (no auth required)
 export const publicAPI = {
     getStats: () => api.get('/admin/public-stats'),

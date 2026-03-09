@@ -195,7 +195,7 @@ const AdminDashboard = () => {
                             <StatCard 
                                 icon={<DollarSign size={24} className="text-amber-600" />}
                                 title="Est. Revenue"
-                                value={`$${stats?.overview?.revnue || 0}`}
+                                value={`$${stats?.overview?.revenue || 0}`}
                                 color="bg-amber-50"
                             />
                         </div>

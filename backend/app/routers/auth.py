@@ -77,6 +77,11 @@ async def register(
             "sleep_routine": sleep_routine,
             "is_verified": True
         })
+    elif role == UserRole.STUDENT:
+        # Students are auto-verified
+        user_dict.update({
+            "is_verified": True
+        })
     else:
         # Staff roles (Doctor, Lab Technician, Pharmacy)
         user_dict.update({

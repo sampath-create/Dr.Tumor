@@ -10,7 +10,7 @@ class AppointmentStatus(str, Enum):
     CANCELLED = "cancelled"
 
 class AppointmentCreate(BaseModel):
-    doctor_id: str
+    doctor_id: Optional[str] = None  # Will be auto-assigned based on symptoms
     date_time: datetime
     symptoms: str
 
