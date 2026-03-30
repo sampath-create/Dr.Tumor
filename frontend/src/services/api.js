@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const resolvedBaseURL = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+  baseURL: resolvedBaseURL,
 });
 
 api.interceptors.request.use(
@@ -46,8 +48,11 @@ export const medicalAPI = {
 
 export const adminAPI = {
     getStats: () => api.get('/admin/stats'),
-    getAllUsers: () => api.get('/users/'),
+  getUserDashboard: (id) => api.get(`/admin/users/${id}/dashboard`),
+    getAllUsers: (skip = 0, limit = 1000) => api.get('/users/', { params: { skip, limit } }),
     deleteUser: (id) => api.delete(`/users/${id}`),
+  verifyUser: (id) => api.put(`/users/${id}/verify`),
+  rejectUser: (id) => api.put(`/users/${id}/reject`),
     createUser: (userData) => api.post('/auth/register', userData), // Admin can use the same register endpoint with the token auth to create specific roles
 };
 

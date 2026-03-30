@@ -1,7 +1,7 @@
 import asyncio
 from app.core.database import db, connect_to_mongo, close_mongo_connection
 from app.core.security import get_password_hash
-from app.schemas.user import UserRole
+from app.models.user import UserRole
 
 async def seed_data():
     await connect_to_mongo()

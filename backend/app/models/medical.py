@@ -29,14 +29,14 @@ class LabRequestStatus(str, Enum):
 class LabRequestCreate(BaseModel):
     appointment_id: str
     patient_id: str
-    test_type: str # X-Ray, CT, MRI, Blood Test
+    test_type: str
     notes: Optional[str] = None
 
 class LabReport(BaseModel):
     id: str
     lab_request_id: str
-    report_url: Optional[str] = None # Or base64 data
-    ai_analysis_result: Optional[Dict[str, Any]] = None 
+    report_url: Optional[str] = None
+    ai_analysis_result: Optional[Dict[str, Any]] = None
     technician_id: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
 

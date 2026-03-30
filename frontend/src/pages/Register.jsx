@@ -34,6 +34,16 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
+    if (formData.role === 'patient' && formData.sleep_routine !== '') {
+      const sleepHours = Number(formData.sleep_routine);
+      if (Number.isNaN(sleepHours) || sleepHours < 0 || sleepHours > 24) {
+        setError('Sleep routine must be between 0 and 24 hours.');
+        return;
+      }
+    }
+
     try {
       // Create FormData object
       const data = new FormData();
@@ -46,7 +56,7 @@ const Register = () => {
       await authAPI.register(data);
       navigate('/login');
     } catch (err) {
-      setError('Registration failed. Email might be taken or validation error.');
+      setError(err?.response?.data?.detail || 'Registration failed. Email might be taken or validation error.');
       console.error(err);
     }
   };
@@ -143,7 +153,10 @@ const Register = () => {
                  <div className="grid grid-cols-2 gap-4">
                      <div>
                         <label className="block text-xs text-slate-700">Sleep Routine</label>
-                         <input type="text" name="sleep_routine" placeholder="e.g. 8 hours"
+                       <input type="number" name="sleep_routine" placeholder="e.g. 8"
+                         min="0"
+                         max="24"
+                         step="0.5"
                             className="w-full px-2 py-2 mt-1 border border-slate-200 rounded-md text-sm bg-white"
                             onChange={handleChange} />
                     </div>

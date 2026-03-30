@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 from app.auth.dependencies import get_current_user, require_role
 from app.core.database import get_database
-from app.schemas.user import UserResponse, UserRole, UserInDB
+from app.models.user import UserResponse, UserRole, UserInDB
 from bson import ObjectId
 
 router = APIRouter()
@@ -22,7 +22,7 @@ async def read_doctors(db = Depends(get_database)):
 async def read_user_by_id(user_id: str, db = Depends(get_database), current_user=Depends(get_current_user)):
     try:
         obj_id = ObjectId(user_id)
-    except:
+    except Exception:
          raise HTTPException(status_code=400, detail="Invalid ID format")
 
     user = await db["users"].find_one({"_id": obj_id})
@@ -38,7 +38,7 @@ async def get_all_users(
     db = Depends(get_database),
     current_user = Depends(require_role(UserRole.ADMIN))
 ):
-    users = await db["users"].find({}).skip(skip).limit(limit).to_list(100)
+    users = await db["users"].find({}).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
     for u in users:
         u["id"] = str(u["_id"])
     return users
@@ -51,7 +51,7 @@ async def delete_user(
 ):
     try:
         obj_id = ObjectId(user_id)
-    except:
+    except Exception:
         raise HTTPException(status_code=400, detail="Invalid ID")
     
     # Optional: Prevent deleting self
@@ -63,4 +63,58 @@ async def delete_user(
         raise HTTPException(status_code=404, detail="User not found")
     
     return {"message": "User deleted successfully"}
+
+@router.put("/{user_id}/verify", response_model=UserResponse)
+async def verify_staff_user(
+    user_id: str,
+    db = Depends(get_database),
+    current_user = Depends(require_role(UserRole.ADMIN))
+):
+    try:
+        obj_id = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid ID")
+
+    user = await db["users"].find_one({"_id": obj_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if user["role"] not in {UserRole.DOCTOR.value, UserRole.PHARMACY.value, UserRole.LAB_TECHNICIAN.value}:
+        raise HTTPException(status_code=400, detail="Only doctor, pharmacy and lab technician accounts require admin approval")
+
+    await db["users"].update_one(
+        {"_id": obj_id},
+        {"$set": {"is_verified": True, "is_rejected": False}},
+    )
+
+    updated_user = await db["users"].find_one({"_id": obj_id})
+    updated_user["id"] = str(updated_user["_id"])
+    return updated_user
+
+@router.put("/{user_id}/reject", response_model=UserResponse)
+async def reject_staff_user(
+    user_id: str,
+    db = Depends(get_database),
+    current_user = Depends(require_role(UserRole.ADMIN))
+):
+    try:
+        obj_id = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid ID")
+
+    user = await db["users"].find_one({"_id": obj_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if user["role"] not in {UserRole.DOCTOR.value, UserRole.PHARMACY.value, UserRole.LAB_TECHNICIAN.value}:
+        raise HTTPException(status_code=400, detail="Only doctor, pharmacy and lab technician accounts can be rejected")
+
+    await db["users"].update_one(
+        {"_id": obj_id},
+        {"$set": {"is_verified": False, "is_rejected": True}},
+    )
+
+    updated_user = await db["users"].find_one({"_id": obj_id})
+    updated_user["id"] = str(updated_user["_id"])
+    return updated_user
 

@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from app.core.config import settings
 from app.core.database import get_database
-from app.schemas.user import TokenData, UserRole
+from app.models.user import TokenData, UserRole
 # from app.models.user import User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
@@ -44,4 +44,18 @@ def require_role(role: UserRole):
                 detail="Operation not permitted"
             )
         return current_user
+    return role_checker
+
+
+def require_any_role(roles: list[UserRole]):
+    allowed = {role.value for role in roles}
+
+    def role_checker(current_user: dict = Depends(get_current_user)):
+        if current_user["role"] not in allowed and current_user["role"] != UserRole.ADMIN.value:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Operation not permitted",
+            )
+        return current_user
+
     return role_checker

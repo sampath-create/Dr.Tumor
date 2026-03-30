@@ -1,14 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
-from typing import List, Optional
+from typing import List
 from app.auth.dependencies import get_current_user, require_role
 from app.core.database import get_database
-from app.schemas.medical import (
+from app.core.crypto import decrypt_text, encrypt_bytes, encrypt_text
+from app.models.medical import (
     Prescription, PrescriptionCreate, LabRequest, LabRequestCreate, LabReport, LabRequestStatus
 )
-from app.schemas.user import UserRole
+from app.models.user import UserRole
 from bson import ObjectId
-import shutil
 import os
+from uuid import uuid4
 
 router = APIRouter()
 
@@ -22,11 +23,13 @@ async def create_prescription(
 ):
     daily = prescription.dict()
     daily["doctor_id"] = str(current_user["_id"])
+    daily["notes"] = encrypt_text(daily.get("notes"))
     daily["is_dispensed"] = False
     
     new_rx = await db["prescriptions"].insert_one(daily)
     created_rx = await db["prescriptions"].find_one({"_id": new_rx.inserted_id})
     created_rx["id"] = str(created_rx["_id"])
+    created_rx["notes"] = decrypt_text(created_rx.get("notes"))
     return created_rx
 
 @router.get("/prescriptions", response_model=List[Prescription])
@@ -44,6 +47,7 @@ async def get_prescriptions(
     prescriptions = await db["prescriptions"].find(query).to_list(100)
     for p in prescriptions:
         p["id"] = str(p["_id"])
+        p["notes"] = decrypt_text(p.get("notes"))
     return prescriptions
 
 @router.put("/prescriptions/{rx_id}/dispense", response_model=Prescription)
@@ -54,7 +58,7 @@ async def dispense_prescription(
 ):
     try:
         obj_id = ObjectId(rx_id)
-    except:
+    except Exception:
         raise HTTPException(status_code=400, detail="Invalid ID")
 
     update_result = await db["prescriptions"].update_one(
@@ -66,6 +70,7 @@ async def dispense_prescription(
         
     updated_rx = await db["prescriptions"].find_one({"_id": obj_id})
     updated_rx["id"] = str(updated_rx["_id"])
+    updated_rx["notes"] = decrypt_text(updated_rx.get("notes"))
     return updated_rx
 
 # --- LAB REQUESTS ---
@@ -110,12 +115,24 @@ async def upload_lab_report(
     db = Depends(get_database),
     current_user = Depends(require_role(UserRole.LAB_TECHNICIAN))
 ):
-    # simple file save
+    # Encrypt file before storage to protect reports at rest.
     upload_dir = "uploads"
     os.makedirs(upload_dir, exist_ok=True)
-    file_location = f"{upload_dir}/{file.filename}"
-    with open(file_location, "wb+") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    original_name = os.path.basename(file.filename or "report.bin")
+    _, extension = os.path.splitext(original_name)
+    stored_name = f"{uuid4().hex}{extension or '.bin'}"
+
+    raw_file = await file.read()
+    if not raw_file:
+        raise HTTPException(status_code=400, detail="Empty file uploaded")
+
+    encrypted_file, was_encrypted = encrypt_bytes(raw_file)
+    if was_encrypted:
+        stored_name = f"{stored_name}.enc"
+
+    file_location = os.path.join(upload_dir, stored_name)
+    with open(file_location, "wb") as buffer:
+        buffer.write(encrypted_file)
     
     # Placeholder for AI analysis
     ai_result = None
@@ -125,6 +142,7 @@ async def upload_lab_report(
     report_data = {
         "lab_request_id": request_id,
         "report_url": file_location,
+        "report_encrypted": was_encrypted,
         "technician_id": str(current_user["_id"]),
         "ai_analysis_result": ai_result
     }
@@ -133,7 +151,7 @@ async def upload_lab_report(
     
     try:
         req_oid = ObjectId(request_id)
-    except:
+    except Exception:
         raise HTTPException(status_code=400, detail="Invalid Request ID")
 
     # Update request status
@@ -158,7 +176,7 @@ async def get_lab_report(
 ):
     try:
         rep_oid = ObjectId(report_id)
-    except:
+    except Exception:
         raise HTTPException(status_code=400, detail="Invalid Report ID")
 
     report = await db["lab_reports"].find_one({"_id": rep_oid})
